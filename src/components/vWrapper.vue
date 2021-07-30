@@ -1,12 +1,15 @@
 <template>
   <div class="wrapper">
-    <h1>Wrapper</h1>
+    <v-form/>
   </div>
 </template>
 
 <script>
+import vForm from '@/components/vForm.vue'
+
 export default {
-  name: 'vWrapper'
+  name: 'vWrapper',
+  components: { vForm }
 }
 </script>
 
