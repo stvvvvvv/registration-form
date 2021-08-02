@@ -28,6 +28,8 @@ body {
 
 .form {
     &__step {
+        max-width: 500px;
+        max-height: 500px;
         position: absolute;
         top: 50%;  
         left: 50%; 
@@ -35,14 +37,16 @@ body {
         display: flex;
         align-items: center;
         flex-direction: column;
-    }
+    }     
     &__container {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         width: 500px;
+        max-width: 500px;
         height: 500px;
+        max-height: 500px;
         padding: 1rem;
         background-color: #1111;
         color: #111122;
@@ -109,6 +113,7 @@ body {
          }
     }
     &__cbx-container{
+        width: 350px;
         max-width: 500px;
         display: flex;
         flex-wrap: wrap;
