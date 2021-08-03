@@ -10,6 +10,7 @@
           </p>
           <input
             class="form__input"
+            v-model="userInfo.email"
             type="text"
             name="email"
             id="email"
@@ -41,9 +42,10 @@
       <transition name="fade">
         <div class="form__step" v-show="step === 1">
           <h2 class="form__title">Create an account</h2>
-          <label for="pass">Login</label>
+          <label for="login">Login</label>
           <input
             class="form__input"
+            v-model="userInfo.login"
             type="text"
             name="login"
             id="login"
@@ -52,6 +54,7 @@
           <label for="pass">Password</label>
           <input
             class="form__input"
+            v-model="userInfo.pass"
             type="password"
             name="pass"
             id="pass"
@@ -59,6 +62,7 @@
           />
           <input
             class="form__input"
+            v-model="userInfo.passConfirm"
             type="password"
             name="passComfirm"
             id="passConfirm"
@@ -90,6 +94,56 @@
       <!--Thrid step-->
       <transition name="fade">
         <div class="form__step" v-show="step === 2">
+          <h2 class="form__title">Personal information</h2>
+          <label for="name">Name</label>
+          <input
+            class="form__input"
+            v-model="userInfo.name"
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Your name"
+          />
+          <label for="surname">Surname</label>
+          <input
+            class="form__input"
+            v-model="userInfo.surname"
+            type="text"
+            name="surname"
+            id="surname"
+            placeholder="Your surname"
+          />
+          <label for="number">Number</label>
+          <input
+            class="form__input"
+            v-model="userInfo.number"
+            type="text"
+            name="number"
+            id="number"
+            placeholder="+7 (999) 999 99 99"
+          />
+          <button
+            class="form__btn"
+            type="button"
+            @click="nextStep()"
+          >
+            Next
+          </button>
+          <button
+            class="form__btn"
+            type="button"
+            @click="prevStep()"
+            style="border: none"
+          >
+            Back
+          </button>
+        </div>
+      </transition>
+      <!--/Thrid step-->
+      <!-- ============================================== -->
+      <!-- Fourth step -->
+      <transition name="fade">
+        <div class="form__step" v-show="step === 3">
           <h2 class="form__title">Your interests</h2>
           <p class="form__note">
             Select a few options so that we understand you better
@@ -190,9 +244,9 @@
           <button
             class="form__btn"
             type="button"
-            @click="nextStep()"
+            @click="nextStep(), regUser()"
           >
-            Next
+            Register
           </button>
           <button
             class="form__btn"
@@ -203,11 +257,8 @@
             Back
           </button>
         </div>
-      </transition>
-      <!--/Thrid step-->
-      <!-- Fourth step -->
-      <transition name="fade">
-        <div class="form__step" v-show="step === 3">
+      </transition>      <transition name="fade">
+        <div class="form__step" v-show="step === 4">
           <h2 class="form__title">4 step</h2>
           <button
             class="form__btn"
@@ -242,7 +293,16 @@ export default {
       activeCss: false,
       activeScss: false,
       activeLess: false,
-      activeSaas: false
+      activeSaas: false,
+      userInfo: {
+        email: '',
+        name: '',
+        surname: '',
+        number: '',
+        login: '',
+        pass: '',
+        comfirmPass: ''
+      }
     }
   },
   methods: {
@@ -251,6 +311,10 @@ export default {
     },
     prevStep () {
       this.step--
+    },
+    regUser () {
+      console.log('Registration Successful')
+      console.log(this.userInfo)
     }
   }
 }
