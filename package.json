@@ -9,6 +9,8 @@
     "gh-pages-deploy": "node scripts/gh-pages-deploy.js"
   },
   "dependencies": {
+    "@vuelidate/core": "^2.0.0-alpha.22",
+    "@vuelidate/validators": "^2.0.0-alpha.19",
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
   },
