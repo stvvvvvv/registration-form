@@ -11,7 +11,9 @@ html {
 body {
     font-size: 1.6rem;
 }
-
+.mt-5{
+    margin-top: 4rem !important;
+}
 .wrapper {
     display: flex;
     justify-content: center;
@@ -64,11 +66,27 @@ body {
     }
     &__input {
         width: 300px;
-        margin-bottom: 2rem;
+        margin-bottom: 4rem;
         font-size: 1.8rem;
         border-radius: 1rem;
         border: solid 2px #111144;
         outline: none;
+    }
+    &__error{
+        position: absolute;
+        color: red;
+        &-email{
+            top: 69%;
+        }
+        &-login{
+            top: 27%;
+        }
+        &-pass{
+            top: 50%;
+        }
+        &-pass-confirm{
+            top: 67%;
+        }
     }
     &__label {
         cursor: pointer;
@@ -129,6 +147,15 @@ body {
     &__cbx-mass{
         opacity: 0;
     }
+}
+.first-step-btn{
+    position: absolute;
+    top: 100%;
+}
+
+.second-step-btn{
+    position: absolute;
+    top: 77%;
 }
 
 .form__checkbox:checked + .form__span::before {

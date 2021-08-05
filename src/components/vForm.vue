@@ -1,6 +1,6 @@
 <template>
   <div class="form__container">
-    <form action="" class="form">
+    <form @submit.prevent="regUser" class="form" novalidate>
       <!--First step-->
       <transition name="fade">
         <div class="form__step" v-show="step === 0">
@@ -11,11 +11,24 @@
           <input
             class="form__input"
             v-model="userInfo.email"
+            @blur="v$.userInfo.email.$touch"
             type="text"
             name="email"
             id="email"
             placeholder="Your email"
           />
+          <transition
+          name="custom-classes-transition"
+          enter-active-class="animated tada"
+          leave-active-class="animated bounceOut"
+          >
+            <span
+            class="form__error form__error-email"
+            v-if="v$.userInfo.email.$error"
+            >
+              Enter correct email
+            </span>
+          </transition>
           <div class="input__container">
             <label class="form__label" for="cbx">
               <input
@@ -27,13 +40,20 @@
               <span class="form__span"> Send me the latest news</span>
             </label>
           </div>
-          <button
-            class="form__btn"
-            type="button"
-            @click="nextStep()"
+          <transition
+          name="btn-fade"
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOut"
           >
-            Send email
-          </button>
+            <button
+              v-if="v$.userInfo.email.$invalid === false"
+              class="form__btn first-step-btn"
+              type="button"
+              @click="nextStep()"
+            >
+              Send email
+            </button>
+          </transition>
         </div>
       </transition>
       <!--/First step-->
@@ -46,41 +66,86 @@
           <input
             class="form__input"
             v-model="userInfo.login"
+            @blur="v$.userInfo.login.$touch"
             type="text"
             name="login"
             id="login"
             placeholder="Your login"
           />
+          <transition
+          name="custom-classes-transition"
+          enter-active-class="animated tada"
+          leave-active-class="animated bounceOut"
+          >
+            <span
+            class="form__error form__error-login"
+            v-if="v$.userInfo.login.$error"
+            >
+              Minimum login length 8 characters
+            </span>
+          </transition>
           <label for="pass">Password</label>
           <input
             class="form__input"
             v-model="userInfo.pass"
+            @blur="v$.userInfo.pass.$touch"
             type="password"
             name="pass"
             id="pass"
             placeholder="Your password"
           />
+          <transition
+          name="custom-classes-transition"
+          enter-active-class="animated tada"
+          leave-active-class="animated bounceOut"
+          >
+            <span
+            class="form__error form__error-pass"
+            v-if="v$.userInfo.pass.$error"
+            >
+              Minimum password length 8 characters
+            </span>
+          </transition>
           <input
             class="form__input"
             v-model="userInfo.passConfirm"
+            @blur="v$.userInfo.passConfirm.$touch"
             type="password"
             name="passComfirm"
             id="passConfirm"
             placeholder="Confirm password"
           />
           <p class="form__note">
-            Password must be at least eight characters long and include letters,
-            numbers and special characters
+            Login and password must be at least eight characters long
           </p>
-          <button
-            class="form__btn"
-            type="button"
-            @click="nextStep()"
+          <transition
+          name="custom-classes-transition"
+          enter-active-class="animated tada"
+          leave-active-class="animated bounceOut"
           >
-            Next
-          </button>
+            <span
+            class="form__error form__error-pass-confirm"
+            v-if="v$.userInfo.passConfirm.$error"
+            >
+              Enter same password
+            </span>
+          </transition>
+          <transition
+          name="btn-fade"
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOut"
+          >
+            <button
+              v-if="v$.userInfo.login.$invalid === false && v$.userInfo.pass.$invalid === false && v$.userInfo.passConfirm.$invalid === false"
+              class="form__btn second-step-btn"
+              type="button"
+              @click="nextStep()"
+            >
+              Next
+            </button>
+          </transition>
           <button
-            class="form__btn"
+            class="form__btn mt-5"
             type="button"
             @click="prevStep()"
             style="border: none"
@@ -99,6 +164,7 @@
           <input
             class="form__input"
             v-model="userInfo.name"
+            @blur="v$.userInfo.name.$touch"
             type="text"
             name="name"
             id="name"
@@ -243,10 +309,10 @@
           </div>
           <button
             class="form__btn"
-            type="button"
-            @click="nextStep(), regUser()"
+            type="submit"
+            @click="nextStep()"
           >
-            Register
+            Submit
           </button>
           <button
             class="form__btn"
@@ -276,8 +342,15 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
+import { required, email, minLength, sameAs } from '@vuelidate/validators'
+// import { reactive, computed } from 'vue'
+
 export default {
   name: 'Form',
+  setup () {
+    return { v$: useVuelidate() }
+  },
   data () {
     return {
       step: 0,
@@ -294,6 +367,7 @@ export default {
       activeScss: false,
       activeLess: false,
       activeSaas: false,
+      mail: '',
       userInfo: {
         email: '',
         name: '',
@@ -305,6 +379,18 @@ export default {
       }
     }
   },
+  validations () {
+    return {
+      mail: { required, email },
+      userInfo: {
+        email: { required, email },
+        login: { required, minLength: minLength(8) },
+        pass: { required, minLength: minLength(8) },
+        passConfirm: { required, sameAs: sameAs(this.userInfo.pass) },
+        name: { required, minLength: minLength(1) }
+      }
+    }
+  },
   methods: {
     nextStep () {
       this.step++
@@ -313,6 +399,7 @@ export default {
       this.step--
     },
     regUser () {
+      console.log(this.v$)
       console.log('Registration Successful')
       console.log(this.userInfo)
     }
