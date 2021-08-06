@@ -88,10 +88,13 @@ body {
             top: 64%;
         }
         &-name{
-            top: 26%;
+            top: 27%;
         }
         &-surname{
-            top: 30%;
+            top: 49%;
+        }
+        &-number{
+            top: 72%;
         }
     }
     &__label {
@@ -160,6 +163,11 @@ body {
 }
 
 .second-step-btn{
+    position: absolute;
+    top: 77%;
+}
+
+.third-step-btn{
     position: absolute;
     top: 77%;
 }
