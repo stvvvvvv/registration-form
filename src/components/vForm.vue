@@ -170,26 +170,65 @@
             id="name"
             placeholder="Your name"
           />
+          <transition
+          name="custom-classes-transition"
+          enter-active-class="animated tada"
+          leave-active-class="animated bounceOut"
+          >
+            <span
+            class="form__error form__error-name"
+            v-if="v$.userInfo.name.$error"
+            >
+              Field Name is required
+            </span>
+          </transition>
           <label for="surname">Surname</label>
           <input
             class="form__input"
             v-model="userInfo.surname"
+            @blur="v$.userInfo.surname.$touch"
             type="text"
             name="surname"
             id="surname"
             placeholder="Your surname"
           />
+          <transition
+          name="custom-classes-transition"
+          enter-active-class="animated tada"
+          leave-active-class="animated bounceOut"
+          >
+            <span
+            class="form__error form__error-name"
+            v-if="v$.userInfo.surname.$error"
+            >
+              Field Surname is required
+            </span>
+          </transition>
           <label for="number">Number</label>
           <input
             class="form__input"
             v-model="userInfo.number"
+            @blur="v$.userInfo.number.$touch"
             type="text"
             name="number"
             id="number"
             placeholder="+7 (999) 999 99 99"
           />
+          <transition
+          name="custom-classes-transition"
+          enter-active-class="animated tada"
+          leave-active-class="animated bounceOut"
+          >
+            <span
+            class="form__error form__error-name"
+            v-if="v$.userInfo.number.$error"
+            >
+              Enter correct number
+            </span>
+          </transition>
           <button
             class="form__btn"
+            v-if="v$.userInfo.name.$invalid === false && v$.userInfo.surname.$invalid === false && v$.userInfo.number.$invalid === false"
             type="button"
             @click="nextStep()"
           >
@@ -222,7 +261,7 @@
               name="react"
               id="react"
             />
-            <label  class="form__cbx-label" @click="activeVue = !activeVue" :class="{ active: activeVue }"  for="vue">Vue.js</label>
+            <label class="form__cbx-label" @click="activeVue = !activeVue" :class="{ active: activeVue }"  for="vue">Vue.js</label>
             <input
               class="form__cbx-mass"
               type="checkbox"
@@ -343,7 +382,7 @@
 
 <script>
 import useVuelidate from '@vuelidate/core'
-import { required, email, minLength, sameAs } from '@vuelidate/validators'
+import { required, email, minLength, maxLength, alpha, alphaNum, sameAs, numeric } from '@vuelidate/validators'
 // import { reactive, computed } from 'vue'
 
 export default {
@@ -384,10 +423,12 @@ export default {
       mail: { required, email },
       userInfo: {
         email: { required, email },
-        login: { required, minLength: minLength(8) },
-        pass: { required, minLength: minLength(8) },
-        passConfirm: { required, sameAs: sameAs(this.userInfo.pass) },
-        name: { required, minLength: minLength(1) }
+        login: { required, alphaNum, minLength: minLength(8) },
+        pass: { required, alphaNum, minLength: minLength(8) },
+        passConfirm: { required, alphaNum, sameAs: sameAs(this.userInfo.pass) },
+        name: { required, alpha, minLength: minLength(1) },
+        surname: { required, alpha, minLength: minLength(1) },
+        number: { required, numeric, minLength: minLength(11), maxLength: maxLength(11) }
       }
     }
   },
