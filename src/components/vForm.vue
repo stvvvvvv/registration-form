@@ -198,21 +198,22 @@
           leave-active-class="animated bounceOut"
           >
             <span
-            class="form__error form__error-name"
+            class="form__error form__error-surname"
             v-if="v$.userInfo.surname.$error"
             >
               Field Surname is required
             </span>
           </transition>
           <label for="number">Number</label>
-          <input
+          <InputMask
             class="form__input"
             v-model="userInfo.number"
             @blur="v$.userInfo.number.$touch"
             type="text"
             name="number"
             id="number"
-            placeholder="+7 (999) 999 99 99"
+            placeholder=" + 7 (___) ___-____"
+            mask=" + 7 (999) 999-9999"
           />
           <transition
           name="custom-classes-transition"
@@ -220,14 +221,17 @@
           leave-active-class="animated bounceOut"
           >
             <span
-            class="form__error form__error-name"
+            class="form__error form__error-number"
             v-if="v$.userInfo.number.$error"
             >
               Enter correct number
             </span>
           </transition>
+          <p>
+            {{ this.userInfo.number.lenghth }}
+          </p>
           <button
-            class="form__btn"
+            class="form__btn third-step-btn"
             v-if="v$.userInfo.name.$invalid === false && v$.userInfo.surname.$invalid === false && v$.userInfo.number.$invalid === false"
             type="button"
             @click="nextStep()"
@@ -235,7 +239,7 @@
             Next
           </button>
           <button
-            class="form__btn"
+            class="form__btn mt-5"
             type="button"
             @click="prevStep()"
             style="border: none"
@@ -364,14 +368,15 @@
         </div>
       </transition>      <transition name="fade">
         <div class="form__step" v-show="step === 4">
-          <h2 class="form__title">4 step</h2>
+          <h2 class="form__title">Thank you!</h2>
+          <p>Click the button to refresh the page</p>
           <button
             class="form__btn"
             type="button"
-            @click="prevStep()"
+            @click="refreshBtn()"
             style="border: none"
           >
-            Back
+            Refresh
           </button>
         </div>
       </transition>
@@ -382,11 +387,12 @@
 
 <script>
 import useVuelidate from '@vuelidate/core'
-import { required, email, minLength, maxLength, alpha, alphaNum, sameAs, numeric } from '@vuelidate/validators'
-// import { reactive, computed } from 'vue'
+import { required, email, minLength, alpha, alphaNum, sameAs } from '@vuelidate/validators'
+import InputMask from 'primevue/inputmask'
 
 export default {
   name: 'Form',
+  components: { InputMask },
   setup () {
     return { v$: useVuelidate() }
   },
@@ -428,7 +434,7 @@ export default {
         passConfirm: { required, alphaNum, sameAs: sameAs(this.userInfo.pass) },
         name: { required, alpha, minLength: minLength(1) },
         surname: { required, alpha, minLength: minLength(1) },
-        number: { required, numeric, minLength: minLength(11), maxLength: maxLength(11) }
+        number: { required, minLength: minLength(10) }
       }
     }
   },
@@ -443,6 +449,9 @@ export default {
       console.log(this.v$)
       console.log('Registration Successful')
       console.log(this.userInfo)
+    },
+    refreshBtn () {
+      window.location.reload()
     }
   }
 }
