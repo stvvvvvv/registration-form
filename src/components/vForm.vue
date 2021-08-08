@@ -111,7 +111,7 @@
             v-model="userInfo.passConfirm"
             @blur="v$.userInfo.passConfirm.$touch"
             type="password"
-            name="passComfirm"
+            name="passCoNfirm"
             id="passConfirm"
             placeholder="Confirm password"
           />
@@ -420,13 +420,12 @@ export default {
         number: '',
         login: '',
         pass: '',
-        comfirmPass: ''
+        passConfirm: ''
       }
     }
   },
   validations () {
     return {
-      mail: { required, email },
       userInfo: {
         email: { required, email },
         login: { required, alphaNum, minLength: minLength(8) },
@@ -446,7 +445,6 @@ export default {
       this.step--
     },
     regUser () {
-      console.log(this.v$)
       console.log('Registration Successful')
       console.log(this.userInfo)
     },
